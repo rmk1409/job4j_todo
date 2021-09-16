@@ -19,13 +19,12 @@ import java.util.Objects;
 public class ItemServlet extends HttpServlet {
     private static final SimpleDateFormat dateFormat = new SimpleDateFormat("MMM dd, yyyy, h:mm:ss a");
     private static final Gson GSON = new GsonBuilder().create();
-    private static final Store store = Store.getInstance();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         resp.setContentType("application/json; charset=utf-8");
         OutputStream output = resp.getOutputStream();
-        String json = GSON.toJson(store.findAll());
+        String json = GSON.toJson(Store.getInstance().findAll());
         output.write(json.getBytes(StandardCharsets.UTF_8));
         output.flush();
         output.close();
@@ -42,6 +41,7 @@ public class ItemServlet extends HttpServlet {
         String created = req.getParameter("created");
 
         String json;
+        Store store = Store.getInstance();
         if (Objects.isNull(id)) {
             json = GSON.toJson(store.saveOrUpdate(new Item(description)));
         } else {
