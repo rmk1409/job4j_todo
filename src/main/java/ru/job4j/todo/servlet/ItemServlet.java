@@ -19,7 +19,7 @@ import java.util.Objects;
 public class ItemServlet extends HttpServlet {
     private static final SimpleDateFormat dateFormat = new SimpleDateFormat("MMM dd, yyyy, h:mm:ss a");
     private static final Gson GSON = new GsonBuilder().create();
-    private static final Store store = new Store();
+    private static final Store store = Store.getInstance();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {

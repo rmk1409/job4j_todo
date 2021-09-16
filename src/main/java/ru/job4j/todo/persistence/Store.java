@@ -12,10 +12,22 @@ import java.util.List;
 import java.util.function.Function;
 
 public class Store {
+    private Store() {
+    }
+
+    public static Store getInstance() {
+        return Holder.INSTANCE;
+    }
+
     private final StandardServiceRegistry registry = new StandardServiceRegistryBuilder()
             .configure().build();
+
     private final SessionFactory sf = new MetadataSources(registry)
             .buildMetadata().buildSessionFactory();
+
+    private static final class Holder {
+        private static final Store INSTANCE = new Store();
+    }
 
     public List<Item> findAll() {
         return tx(session -> session.createQuery("from Item").list());
