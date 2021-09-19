@@ -6,7 +6,7 @@ import java.util.List;
 
 @Entity
 public class Brand {
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "brand")
     private final List<Model> models = new ArrayList<>();
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -23,7 +23,7 @@
         </property>
         <property name="hibernate.hbm2ddl.auto">update</property>
 
-        <mapping class="ru.job4j.manytomany.Book"/>
-        <mapping class="ru.job4j.manytomany.Author"/>
+        <mapping class="ru.job4j.many.Brand"/>
+        <mapping class="ru.job4j.many.Model"/>
     </session-factory>
 </hibernate-configuration>

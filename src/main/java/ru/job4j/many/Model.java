@@ -1,9 +1,6 @@
 package ru.job4j.many;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 public class Model {
@@ -12,9 +9,13 @@ public class Model {
     private int id;
     private String name;
 
-    public static Model of(String name) {
+    @ManyToOne
+    private Brand brand;
+
+    public static Model of(String name, Brand brand) {
         Model model = new Model();
         model.name = name;
+        model.brand = brand;
         return model;
     }
 }
