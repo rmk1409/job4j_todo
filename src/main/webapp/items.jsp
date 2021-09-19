@@ -1,3 +1,4 @@
+<%@ page import="ru.job4j.todo.model.User" %>
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core" %>
 
@@ -26,6 +27,35 @@
 <body>
 <div class="container mt-3">
     <c:import url="nav-menu.jsp"/>
+    <form>
+        <div class="form-group">
+            <label>
+                <input id="description-input" class="form-control" type="text"
+                       name="description" placeholder="description">
+            </label>
+        </div>
+        <button id="add-item-button" class="btn btn-primary">Add</button>
+    </form>
+    <div class="form-check mt-3">
+        <label>
+            <input id="show-all" class="form-check-input" type="checkbox">
+            Show all
+        </label>
+    </div>
+    <table class="table table-dark">
+        <thead>
+        <tr>
+            <th>id</th>
+            <th>description</th>
+            <th>created</th>
+            <th>done</th>
+            <th>author</th>
+        </tr>
+        </thead>
+        <tbody id="item-body">
+        </tbody>
+    </table>
 </div>
+<script src="script.js"></script>
 </body>
 </html>

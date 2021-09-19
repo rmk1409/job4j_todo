@@ -1,9 +1,6 @@
 package ru.job4j.todo.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.sql.Timestamp;
 
 @Entity
@@ -14,24 +11,35 @@ public class Item {
     private String description;
     private Timestamp created;
     private boolean done;
+    @ManyToOne
+    private User user;
 
     public Item() {
 
     }
 
-    public Item(String description) {
-        this(description, new Timestamp(System.currentTimeMillis()), false);
+    public Item(String description, User user) {
+        this(description, new Timestamp(System.currentTimeMillis()), false, user);
     }
 
-    public Item(String description, Timestamp created, boolean done) {
+    public Item(String description, Timestamp created, boolean done, User user) {
         this.description = description;
         this.created = created;
         this.done = done;
+        this.user = user;
     }
 
-    public Item(int id, String description, Timestamp created, boolean done) {
-        this(description, created, done);
+    public Item(int id, String description, Timestamp created, boolean done, User user) {
+        this(description, created, done, user);
         this.id = id;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public String getDescription() {

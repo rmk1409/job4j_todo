@@ -7,7 +7,9 @@ import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import ru.job4j.todo.model.Item;
+import ru.job4j.todo.model.User;
 
+import javax.persistence.NoResultException;
 import java.util.List;
 import java.util.function.Function;
 
@@ -25,11 +27,33 @@ public class Store {
     private final SessionFactory sf = new MetadataSources(registry)
             .buildMetadata().buildSessionFactory();
 
+    public User findUserByEmail(String email) {
+        return (User) tx(session -> {
+            String hql = "from User where email =: email";
+            Object user = null;
+            try {
+                user = session.createQuery(hql)
+                        .setParameter("email", email)
+                        .getSingleResult();
+            } catch (NoResultException e) {
+                //Ignored
+            }
+            return user;
+        });
+    }
+
+    public User save(User user) {
+        return tx(session -> {
+            session.saveOrUpdate(user);
+            return user;
+        });
+    }
+
     private static final class Holder {
         private static final Store INSTANCE = new Store();
     }
 
-    public List<Item> findAll() {
+    public List<Item> findAllItems() {
         return tx(session -> session.createQuery("from Item").list());
     }
 

@@ -13,6 +13,7 @@ const getTRTemplate = (item) => {
                     <td>
                         <input type="checkbox" data-id="${item.id}" ${item.done ? 'checked' : ''}>
                     </td>
+                    <td>${item.user.email}</td>
                 </tr>`;
 }
 

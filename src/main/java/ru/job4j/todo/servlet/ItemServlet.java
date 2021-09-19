@@ -3,6 +3,7 @@ package ru.job4j.todo.servlet;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import ru.job4j.todo.model.Item;
+import ru.job4j.todo.model.User;
 import ru.job4j.todo.persistence.Store;
 
 import javax.servlet.http.HttpServlet;
@@ -24,7 +25,7 @@ public class ItemServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         resp.setContentType("application/json; charset=utf-8");
         OutputStream output = resp.getOutputStream();
-        String json = GSON.toJson(Store.getInstance().findAll());
+        String json = GSON.toJson(Store.getInstance().findAllItems());
         output.write(json.getBytes(StandardCharsets.UTF_8));
         output.flush();
         output.close();
@@ -42,8 +43,9 @@ public class ItemServlet extends HttpServlet {
 
         String json;
         Store store = Store.getInstance();
+        User user = (User) req.getSession().getAttribute("user");
         if (Objects.isNull(id)) {
-            json = GSON.toJson(store.saveOrUpdate(new Item(description)));
+            json = GSON.toJson(store.saveOrUpdate(new Item(description, user)));
         } else {
             int intId = Integer.parseInt(id);
             Timestamp tCreated = null;
@@ -53,7 +55,7 @@ public class ItemServlet extends HttpServlet {
                 e.printStackTrace();
             }
             boolean bDone = Boolean.parseBoolean(done);
-            json = GSON.toJson(store.saveOrUpdate(new Item(intId, description, tCreated, bDone)));
+            json = GSON.toJson(store.saveOrUpdate(new Item(intId, description, tCreated, bDone, user)));
         }
         output.write(json.getBytes(StandardCharsets.UTF_8));
 
