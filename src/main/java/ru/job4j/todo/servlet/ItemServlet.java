@@ -12,9 +12,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
-import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Objects;
 
 public class ItemServlet extends HttpServlet {
@@ -49,9 +49,9 @@ public class ItemServlet extends HttpServlet {
             json = GSON.toJson(store.addNewItem(new Item(description, user), cIds));
         } else {
             int intId = Integer.parseInt(id);
-            Timestamp tCreated = null;
+            Date tCreated = null;
             try {
-                tCreated = new Timestamp(dateFormat.parse(created).getTime());
+                tCreated = dateFormat.parse(created);
             } catch (ParseException e) {
                 e.printStackTrace();
             }
