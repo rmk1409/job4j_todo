@@ -12,20 +12,24 @@ import ru.job4j.todo.model.User;
 import javax.persistence.NoResultException;
 import java.util.List;
 import java.util.function.Function;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Store {
-    private Store() {
-    }
-
-    public static Store getInstance() {
-        return Holder.INSTANCE;
-    }
+    private final static Logger LOGGER = Logger.getLogger(Store.class.getName());
 
     private final StandardServiceRegistry registry = new StandardServiceRegistryBuilder()
             .configure().build();
 
     private final SessionFactory sf = new MetadataSources(registry)
             .buildMetadata().buildSessionFactory();
+
+    private Store() {
+    }
+
+    public static Store getInstance() {
+        return Holder.INSTANCE;
+    }
 
     public User findUserByEmail(String email) {
         return (User) tx(session -> {
@@ -36,10 +40,15 @@ public class Store {
                         .setParameter("email", email)
                         .getSingleResult();
             } catch (NoResultException e) {
-                //Ignored
+                LOGGER.log(Level.SEVERE, "An exception was thrown", e);
             }
             return user;
         });
+    }
+
+    private static final class Holder {
+        private static final Store INSTANCE = new Store();
+
     }
 
     public User save(User user) {
@@ -47,10 +56,6 @@ public class Store {
             session.saveOrUpdate(user);
             return user;
         });
-    }
-
-    private static final class Holder {
-        private static final Store INSTANCE = new Store();
     }
 
     public List<Item> findAllItems() {
