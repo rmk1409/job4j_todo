@@ -29,10 +29,25 @@
     <c:import url="nav-menu.jsp"/>
     <form>
         <div class="form-group">
-            <label>
+            <label class="col-form-label col-sm-3" for="description-input">Описание</label>
+            <div class="col-sm-5">
                 <input id="description-input" class="form-control" type="text"
-                       name="description" placeholder="description">
-            </label>
+                       name="description" placeholder="description" required>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-form-label col-sm-3" for="cIds"
+                   style="font-weight: 900">Список категорий</label>
+            <div class="col-sm-5">
+                <select class="form-control" name="cIds" id="cIds" multiple
+                        required>
+                    <c:forEach items="${categories}" var="category">
+                        <option value='<c:out value="${category.id}"/>'>
+                            <c:out value="${category.name}"/>
+                        </option>
+                    </c:forEach>
+                </select>
+            </div>
         </div>
         <button id="add-item-button" class="btn btn-primary">Add</button>
     </form>
@@ -50,6 +65,7 @@
             <th>created</th>
             <th>done</th>
             <th>author</th>
+            <th>categories</th>
         </tr>
         </thead>
         <tbody id="item-body">

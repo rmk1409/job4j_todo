@@ -1,20 +1,23 @@
 const $tbody = $('#item-body');
 const $addButton = $('#add-item-button');
 const $descriptionInput = $('#description-input');
+const $categorySelect = $('#cIds');
 const $showAllButton = $('#show-all');
 
 let allItems;
 
 const getTRTemplate = (item) => {
+    const categories = item.categories.reduce((prev, cur) => prev + cur.name + "; ", "");
     return `<tr>
-                    <td>${item.id}</td>
-                    <td>${item.description}</td>
-                    <td>${item.created}</td>
-                    <td>
-                        <input type="checkbox" data-id="${item.id}" ${item.done ? 'checked' : ''}>
-                    </td>
-                    <td>${item.user.email}</td>
-                </tr>`;
+                <td>${item.id}</td>
+                <td>${item.description}</td>
+                <td>${item.created}</td>
+                <td>
+                    <input type="checkbox" data-id="${item.id}" ${item.done ? 'checked' : ''}>
+                </td>
+                <td>${item.user.email}</td>
+                <td>${categories}</td>
+            </tr>`;
 }
 
 const renderItems = () => {
@@ -55,10 +58,17 @@ const saveOrUpdate = (item) => {
     });
 };
 
+const validateForm = () => $descriptionInput.val() && $categorySelect.val().length;
+
 $addButton.on(`click`, (evt) => {
     evt.preventDefault();
+    if (!validateForm()) {
+        alert("All fields must be filled.");
+        return;
+    }
     saveOrUpdate({
-        description: $descriptionInput.val()
+        description: $descriptionInput.val(),
+        cIds: $categorySelect.val()
     });
 });
 

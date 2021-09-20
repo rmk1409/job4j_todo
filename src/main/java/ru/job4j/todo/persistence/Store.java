@@ -6,6 +6,7 @@ import org.hibernate.Transaction;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import ru.job4j.todo.model.Category;
 import ru.job4j.todo.model.Item;
 import ru.job4j.todo.model.User;
 
@@ -46,6 +47,17 @@ public class Store {
         });
     }
 
+    public Item addNewItem(Item item, String[] cIds) {
+        return tx(session -> {
+            for (String id : cIds) {
+                Category category = session.find(Category.class, Integer.parseInt(id));
+                item.addCategory(category);
+            }
+            session.save(item);
+            return item;
+        });
+    }
+
     private static final class Holder {
         private static final Store INSTANCE = new Store();
 
@@ -59,7 +71,11 @@ public class Store {
     }
 
     public List<Item> findAllItems() {
-        return tx(session -> session.createQuery("from Item").list());
+        return tx(session -> session.createQuery("select distinct i from Item i join fetch i.categories").list());
+    }
+
+    public List<Category> findAllCategories() {
+        return tx(session -> session.createQuery("from Category").list());
     }
 
     public Item saveOrUpdate(Item item) {

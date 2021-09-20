@@ -45,7 +45,8 @@ public class ItemServlet extends HttpServlet {
         Store store = Store.getInstance();
         User user = (User) req.getSession().getAttribute("user");
         if (Objects.isNull(id)) {
-            json = GSON.toJson(store.saveOrUpdate(new Item(description, user)));
+            String[] cIds = req.getParameterValues("cIds[]");
+            json = GSON.toJson(store.addNewItem(new Item(description, user), cIds));
         } else {
             int intId = Integer.parseInt(id);
             Timestamp tCreated = null;
