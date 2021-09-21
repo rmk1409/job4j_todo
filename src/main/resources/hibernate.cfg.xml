@@ -24,8 +24,6 @@
         <property name="hibernate.hbm2ddl.auto">update</property>
         <property name="hibernate.jdbc.time_zone">UTC</property>
 
-        <mapping class="ru.job4j.todo.model.Item"/>
-        <mapping class="ru.job4j.todo.model.Category"/>
-        <mapping class="ru.job4j.todo.model.User"/>
+        <mapping class="ru.job4j.hql.Candidate"/>
     </session-factory>
 </hibernate-configuration>
