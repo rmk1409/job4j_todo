@@ -12,10 +12,19 @@ public class HbmRun {
     public static void main(String[] args) {
         final StandardServiceRegistry registry = new StandardServiceRegistryBuilder()
                 .configure().build();
+        Candidate rsl = null;
         try {
             SessionFactory sf = new MetadataSources(registry).buildMetadata().buildSessionFactory();
             Session session = sf.openSession();
             session.beginTransaction();
+
+            rsl = session.createQuery(
+                            "select distinct c from Candidate c "
+                                    + "join fetch c.jobDatabase jDB "
+                                    + "join fetch jDB.jobs j "
+                                    + "where c.id = :id", Candidate.class
+                    ).setParameter("id", 1)
+                    .uniqueResult();
 
             session.getTransaction().commit();
             session.close();
@@ -24,6 +33,8 @@ public class HbmRun {
         } finally {
             StandardServiceRegistryBuilder.destroy(registry);
         }
+
+        System.out.println(rsl);
     }
 
     public static void save(Session session) {

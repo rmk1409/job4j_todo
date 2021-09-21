@@ -25,5 +25,7 @@
         <property name="hibernate.jdbc.time_zone">UTC</property>
 
         <mapping class="ru.job4j.hql.Candidate"/>
+        <mapping class="ru.job4j.hql.JobDatabase"/>
+        <mapping class="ru.job4j.hql.Job"/>
     </session-factory>
 </hibernate-configuration>
