@@ -51,10 +51,10 @@ public class HbmRun {
         return session.get(Candidate.class, id);
     }
 
-    public static Candidate getByName(Session session, String name) {
+    public static List<Candidate> getByName(Session session, String name) {
         return session.createQuery("from Candidate where name = :name", Candidate.class)
                 .setParameter("name", name)
-                .uniqueResult();
+                .list();
     }
 
     public static void update(Session session, Candidate candidate) {
