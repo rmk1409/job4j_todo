@@ -54,10 +54,17 @@ public class OrdersStoreTest {
     @Test
     public void whenSaveOrderAndFindByName() {
         OrdersStore store = new OrdersStore(pool);
-        store.save(Order.of("name1", "description1"));
-        Order found = store.findByName("name1");
-        assertThat(found.getId(), is(1));
-        assertThat(found.getDescription(), is("description1"));
+        Order order1 = Order.of("name1", "description1");
+        Order order2 = Order.of("name1", "description2");
+        Order order3 = Order.of("name1", "description3");
+        Order order4 = Order.of("name2", "description4");
+        store.save(order1);
+        store.save(order2);
+        store.save(order3);
+        store.save(order4);
+        List<Order> foundOrders = store.findByName("name1");
+        assertThat(foundOrders.size(), is(3));
+        assertThat(foundOrders, is(List.of(order1, order2, order3)));
     }
 
     @Test
